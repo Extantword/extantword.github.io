@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Joan · Proyectos</title>
-<meta name="description" content="Proyectos de Joan (Extantword): matemáticas, aprendizaje automático, datos abiertos de Medellín y herramientas para el navegador.">
+<meta name="description" content="Proyectos de Joan (Extantword): matemáticas y aprendizaje automático.">
 <style>
   @font-face { font-family: "KaTeX_Main"; src: url(fonts/KaTeX_Main-Regular.woff2) format("woff2"); font-style: normal; font-weight: 400; }
   @font-face { font-family: "KaTeX_Main"; src: url(fonts/KaTeX_Main-Italic.woff2) format("woff2"); font-style: italic; font-weight: 400; }
@@ -69,7 +69,7 @@
   <header>
     <p class="eyebrow">Extantword</p>
     <h1>Joan<i>.</i></h1>
-    <p class="lead">Matemáticas, aprendizaje automático y herramientas para el navegador. Aquí están todos mis proyectos públicos, con enlace al sitio cuando lo tienen.</p>
+    <p class="lead">Matemáticas y aprendizaje automático. Aquí están algunos de mis proyectos, con enlace al sitio.</p>
     <div class="profile">
       <a href="https://github.com/Extantword">github.com/Extantword</a>
       <a href="https://extantword.github.io/joan.github.io/">Blog</a>
@@ -79,99 +79,25 @@
   <nav class="topics" id="topics" aria-label="Temas"></nav>
   <main id="groups"></main>
 
-  <footer>
-    La lista se actualiza sola: los repositorios públicos nuevos aparecen en “Nuevos”.
-  </footer>
 </div>
 
 <script>
   // Curated list: one entry per public repo. `site` is its live page, when it has one.
   const GROUPS = [
-    { id: 'matematicas', title: 'Matemáticas', blurb: 'Geometría diferencial, probabilidad y métodos numéricos, casi siempre como algo que se puede mirar y tocar.', repos: [
-      { name: 'diff-geo', title: 'Geometría diferencial interactiva', featured: true, site: 'https://extantword.github.io/diff-geo/',
-        desc: 'Curvas y superficies en R³, siguiendo a do Carmo. WebGL2 escrito a mano y un sistema de álgebra computacional en TypeScript.' },
-      { name: 'interactive-diff-geo', title: 'Superficies regulares', featured: true, site: 'https://extantword.github.io/interactive-diff-geo/',
-        desc: 'Las diapositivas del seminario sobre superficies regulares (do Carmo, cap. 2): las figuras se giran con el ratón y la página dibuja lo que dicen las fórmulas.' },
-      { name: 'sandbox', title: 'Sandbox', featured: true, site: 'https://extantword.github.io/sandbox/',
-        desc: 'Diapositivas de la charla sobre sandboxes: qué son, por qué de ellos surge lo inesperado y cómo diseñarlos, con el paseo de los primos, el juego de la vida y autómatas de Wolfram funcionando dentro.' },
-      { name: 'interactive-algebra', title: 'Algebra Sandbox', featured: true, site: 'https://extantword.github.io/interactive-algebra/',
-        desc: 'Una pizarra para hacer álgebra y cálculo a mano alzada: se escribe una expresión, se encierra en un círculo y se vuelve matemática que se puede tocar, arrastrar y transformar.' },
-      { name: 'inferencia-parcial1', title: 'Inferencia estadística: parcial 1', featured: true, site: 'https://extantword.github.io/inferencia-parcial1/',
-        desc: 'Los 22 ejercicios del parcial resueltos paso a paso como diapositivas: estadísticos de orden y convergencia.' },
-      { name: 'Traduccion-proofs-and-fundamentals', title: 'Proofs and Fundamentals, en español',
-        desc: 'Traducción no oficial del libro de Ethan Bloch, hecha por estudiantes de la Universidad Nacional de Colombia.' },
-      { name: 'metodos-numericos', title: 'Métodos numéricos',
-        desc: 'Cuadernos de Jupyter con interpolación polinómica, diferenciación e integración numérica, sistemas lineales, EDO y regresión.' },
-      { name: 'polinomios', title: 'Polinomios',
-        desc: 'Trabajo de álgebra computacional sobre polinomios, en Python.' },
-      { name: 'Algebra_lineal', title: 'Álgebra lineal',
-        desc: 'Cuadernos de Jupyter sobre matrices.' },
+    { id: 'matematicas', title: 'Matemáticas', blurb: 'Geometría diferencial y sistemas dinámicos, como algo que se puede mirar y tocar.', repos: [
+      { name: 'diff-geo', title: 'Geometría diferencial interactiva', featured: true, site: 'https://extantword.github.io/diff-geo/' },
+      { name: 'interactive-diff-geo', title: 'Superficies regulares', featured: true, site: 'https://extantword.github.io/interactive-diff-geo/' },
+      { name: 'sandbox', title: 'Sandbox', featured: true, site: 'https://extantword.github.io/sandbox/' },
     ]},
-    { id: 'aprendizaje', title: 'Aprendizaje automático', blurb: 'Redes neuronales, visión por computador y el material de los semilleros.', repos: [
-      { name: 'activation-space-projections', title: 'Proyecciones del espacio latente', featured: true, site: 'https://extantword.github.io/activation-space-projections/',
-        desc: 'Autoencoders convolucionales cuyo espacio latente se proyecta en 3D con PCA y UMAP: 45 experimentos con visualizaciones interactivas.' },
-      { name: 'skysense', title: 'SkySense',
-        desc: 'Detección de objetos en imágenes tomadas desde drones, con YOLOv8 entrenado en VisDrone.' },
-      { name: 'NASASPACEAPPS-EXO', title: 'Exoplanet Explorer',
-        desc: 'Para el NASA Space Apps Challenge 2025: buscar y analizar exoplanetas de Kepler, TESS y K2, con curvas de luz y modelos de aprendizaje automático.' },
-      { name: 'Semillero-Redes-Neuronales', title: 'Semillero de Redes Neuronales',
-        desc: 'Material del semillero: el marco formal del aprendizaje automático, redes en PyTorch y experimentos.' },
-      { name: 'semillero-redes-neuronales-unalmed.github.io', title: 'Sitio del semillero', site: 'https://extantword.github.io/semillero-redes-neuronales-unalmed.github.io/',
-        desc: 'La página web del Semillero de Redes Neuronales.' },
-      { name: 'atarraia', title: 'AtarraIA',
-        desc: 'Recursos del semillero AtarraIA: autoencoders, sobreajuste y grafos, en cuadernos de Jupyter.' },
-      { name: 'atarraia-practica1', title: 'AtarraIA: práctica 1',
-        desc: 'Primera práctica del semillero: redes neuronales en PyTorch.' },
-      { name: 'tarea-2-aprendizaje-automatico', title: 'Aprendizaje automático: tarea 2',
-        desc: 'Clustering, autoencoders y vision transformers.' },
-      { name: 'UNASTRO4', title: 'UNASTRO4',
-        desc: 'Experimentos con SAM y Stable Diffusion.' },
-    ]},
-    { id: 'medellin', title: 'Medellín y datos abiertos', blurb: 'Datos públicos de la ciudad, reunidos y puestos a la vista.', repos: [
-      { name: 'datos-abiertos-medellin', title: 'Datos Abiertos de Medellín', featured: true, site: 'https://extantword.github.io/datos-abiertos-medellin/',
-        desc: 'Un solo portal para Medata, Metropol, Metro, GeoMedellín y datos.gov.co.' },
-      { name: 'Climed', title: 'MedCity Dashboard', site: 'https://extantword.github.io/Climed/',
-        desc: 'Riesgo de inundaciones, calidad del aire y siniestralidad vial por barrio, con datos en tiempo real.' },
-    ]},
-    { id: 'simulacion', title: 'Simulación', blurb: 'Modelos físicos, en el navegador y en Python.', repos: [
-      { name: 'physics-simulations', title: 'Simulaciones de física', site: 'https://extantword.github.io/physics-simulations/',
-        desc: 'Fluidos, péndulo y ondas, en el navegador.' },
-      { name: 'fede', title: 'Torre de secado por aspersión',
-        desc: 'Simulación de una torre de secado por aspersión a partir de un modelo fenomenológico, en Python.' },
-    ]},
-    { id: 'herramientas', title: 'Herramientas y otros', blurb: 'Utilidades, juegos y ejercicios de programación.', repos: [
-      { name: 'Latte', title: 'Latte', site: 'https://extantword.github.io/Latte/',
-        desc: 'Editor de LaTeX liviano y estético, con vista previa en tiempo real, en el navegador.' },
-      { name: 'joan.github.io', title: 'Blog', site: 'https://extantword.github.io/joan.github.io/',
-        desc: 'Mi blog.' },
-      { name: 'WololoBot', title: 'WololoBot',
-        desc: 'Bot de Discord que reproduce en el canal de voz los audios de Age of Empires II.' },
-      { name: 'Easy-screenshot', title: 'Easy-screenshot',
-        desc: 'Script de Python para tomar capturas de pantalla sin tener que decidir dónde guardarlas.' },
-      { name: 'snakeunal', title: 'Snake',
-        desc: 'El juego de la serpiente, en Python.' },
-      { name: 'node-tut', title: 'Tutorial de Node.js',
-        desc: 'Ejercicios hechos siguiendo un tutorial de Node.js.' },
-      { name: 'ListasGeneralizadas', title: 'Listas generalizadas',
-        desc: 'Estructura de datos de listas generalizadas, en Java.' },
-      { name: 'Taller5', title: 'Taller 5',
-        desc: 'Taller de programación en Java.' },
-      { name: 'claude-test', title: 'claude-test',
-        desc: 'Repositorio para probar funcionalidades de Claude Code.' },
+    { id: 'aprendizaje', title: 'Aprendizaje automático', blurb: 'Redes neuronales y su espacio latente.', repos: [
+      { name: 'activation-space-projections', title: 'Proyecciones del espacio latente', featured: true, site: 'https://extantword.github.io/activation-space-projections/' },
     ]},
   ];
 
   // Snapshot from the GitHub API (language, last push); refreshed live below.
   const META = {
-    'sandbox': ['TypeScript', '2026'], 'interactive-algebra': ['JavaScript', '2026'], 'inferencia-parcial1': ['HTML', '2026'], 'interactive-diff-geo': ['HTML', '2026'], 'diff-geo': ['TypeScript', '2026'],
-    'joan.github.io': ['HTML', '2026'], 'datos-abiertos-medellin': ['HTML', '2026'], 'Climed': ['JavaScript', '2026'],
-    'atarraia': ['Jupyter', '2026'], 'fede': ['Python', '2026'], 'skysense': ['Jupyter', '2026'], 'Latte': ['JavaScript', '2026'],
-    'activation-space-projections': ['HTML', '2026'], 'physics-simulations': ['HTML', '2026'], 'atarraia-practica1': ['Jupyter', '2026'],
-    'claude-test': ['', '2026'], 'semillero-redes-neuronales-unalmed.github.io': ['HTML', '2025'], 'Semillero-Redes-Neuronales': ['Jupyter', '2025'],
-    'NASASPACEAPPS-EXO': ['Python', '2025'], 'tarea-2-aprendizaje-automatico': ['Jupyter', '2025'], 'UNASTRO4': ['Jupyter', '2023'],
-    'snakeunal': ['Python', '2023'], 'polinomios': ['Python', '2023'], 'node-tut': ['JavaScript', '2021'], 'metodos-numericos': ['Jupyter', '2021'],
-    'WololoBot': ['Python', '2021'], 'Traduccion-proofs-and-fundamentals': ['LaTeX', '2021'], 'Taller5': ['Java', '2020'],
-    'ListasGeneralizadas': ['Java', '2020'], 'Algebra_lineal': ['Jupyter', '2020'], 'Easy-screenshot': ['Python', '2020'],
+    'diff-geo': ['TypeScript', '2026'], 'interactive-diff-geo': ['HTML', '2026'], 'sandbox': ['HTML', '2026'],
+    'activation-space-projections': ['HTML', '2026'],
   };
 
   const USER = 'Extantword';
@@ -182,7 +108,6 @@
     const meta = [lang, year, r.stars ? '★ ' + r.stars : ''].filter(Boolean).map(esc).map(t => '<span>' + t + '</span>').join('');
     return '<article class="card' + (r.featured ? ' featured' : '') + '">' +
       '<h3>' + esc(r.title || r.name) + '</h3>' +
-      '<p>' + esc(r.desc || 'Sin descripción.') + '</p>' +
       '<div class="meta">' + meta + '</div>' +
       '<div class="links">' +
         (r.site ? '<a class="site" href="' + esc(r.site) + '">Ver sitio ↗</a>' : '') +
@@ -201,22 +126,15 @@
 
   render(GROUPS);
 
-  // Refresh languages, years and stars from GitHub, and add repos not in the curated list.
+  // Refresh languages, years and stars from GitHub.
   fetch('https://api.github.com/users/' + USER + '/repos?per_page=100')
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(live => {
-      const known = new Set(GROUPS.flatMap(g => g.repos.map(r => r.name)));
-      const fresh = [];
-      live.filter(r => !r.fork && !r.private).forEach(r => {
+      live.forEach(r => {
         META[r.name] = [(r.language || '').replace('Jupyter Notebook', 'Jupyter').replace('Roff', 'LaTeX'), r.pushed_at.slice(0, 4)];
         GROUPS.forEach(g => g.repos.forEach(x => { if (x.name === r.name) x.stars = r.stargazers_count; }));
-        if (!known.has(r.name)) fresh.push({ name: r.name, desc: r.description, stars: r.stargazers_count,
-          site: r.has_pages ? 'https://' + USER.toLowerCase() + '.github.io/' + r.name + '/' : (r.homepage || '') });
       });
-      const groups = fresh.length
-        ? [{ id: 'nuevos', title: 'Nuevos', blurb: 'Repositorios recientes que todavía no tienen su lugar en la lista.', repos: fresh }, ...GROUPS]
-        : GROUPS;
-      render(groups);
+      render(GROUPS);
     })
     .catch(() => {});
 </script>
