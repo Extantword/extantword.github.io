@@ -28,6 +28,11 @@
   .wrap { max-width: 72rem; margin: 0 auto; }
 
   header { max-width: 44rem; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 0 0 1rem; }
+  .topbar .eyebrow { margin: 0; }
+  .lang-toggle { font-family: var(--sans); font-size: 13px; letter-spacing: .08em; color: var(--soft); background: none; border: 1px solid var(--line); border-radius: 999px; padding: .3rem .75rem; cursor: pointer; }
+  .lang-toggle:hover { color: var(--highlight); border-color: var(--highlight); }
+  .lang-toggle:focus-visible { outline: 2px solid #f2730580; outline-offset: 2px; }
   .eyebrow { font-family: var(--sans); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 1rem; }
   h1 { font-weight: 400; font-size: clamp(40px, 6vw, 76px); line-height: 1.02; margin: 0; letter-spacing: -.01em; }
   h1 i { color: var(--highlight); }
@@ -50,7 +55,11 @@
   section > p.blurb { color: var(--soft); font-size: 18px; margin: .3rem 0 0; max-width: 44rem; }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 1rem; margin-top: 1.2rem; }
-  .card { border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.2rem 1rem; display: flex; flex-direction: column; gap: .55rem; background: var(--page); transition: border-color .2s; }
+  .card { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; background: var(--page); transition: border-color .2s; }
+  .card .body { padding: 1.1rem 1.2rem 1rem; display: flex; flex-direction: column; gap: .55rem; flex: 1; }
+  .shot { display: block; aspect-ratio: 16 / 10; background: var(--tint); border-bottom: 1px solid var(--line); overflow: hidden; }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .4s ease; }
+  .card:hover .shot img { transform: scale(1.03); }
   .card:hover { border-color: #1b1d2240; }
   .card.featured { border-top: 3px solid var(--highlight); }
   .card h3 { font-weight: 400; font-size: 23px; line-height: 1.2; margin: 0; overflow-wrap: anywhere; }
@@ -68,65 +77,123 @@
 </head>
 <body>
 <div class="wrap">
-  <header>
+  <div class="topbar">
     <p class="eyebrow">Extantword</p>
+    <button type="button" class="lang-toggle" id="lang-toggle"></button>
+  </div>
+  <header>
     <h1>Joan Sebastian Salazar Montoya<i>.</i></h1>
-    <p class="lead">Soy un estudiante de pregrado en matemáticas y ciencias de la computación en la Universidad Nacional de Colombia. Soy el líder del semillero <a href="https://atarraia.github.io/">AtarraIA</a>. Me interesan muchas cosas, entre ellas la geometría, la topología, el deep learning y las interfaces gráficas.</p>
+    <p class="lead" id="lead"></p>
     <div class="profile">
       <a href="https://github.com/Extantword">github.com/Extantword</a>
       <a href="https://extantword.github.io/joan.github.io/">Blog</a>
     </div>
   </header>
 
-  <nav class="topics" id="topics" aria-label="Temas"></nav>
+  <nav class="topics" id="topics"></nav>
   <main id="groups"></main>
 
 </div>
 
 <script>
-  // Curated list: one entry per public repo. `site` is its live page, when it has one.
+  // Every visible string comes in Spanish and English; the button switches between them.
+  const TEXT = {
+    es: {
+      lead: 'Soy un estudiante de pregrado en matemáticas y ciencias de la computación en la Universidad Nacional de Colombia. Soy el líder del semillero {atarraia}. Me interesan muchas cosas, entre ellas la geometría, la topología, el deep learning y las interfaces gráficas.',
+      description: 'Joan Sebastian Salazar Montoya: estudiante de matemáticas y ciencias de la computación en la Universidad Nacional de Colombia, líder del semillero AtarraIA.',
+      topics: 'Temas', site: 'Ver sitio ↗', code: 'Código', preview: 'Vista previa de ', toggle: 'EN', toggleLabel: 'Read this page in English',
+    },
+    en: {
+      lead: 'I am an undergraduate student in mathematics and computer science at the Universidad Nacional de Colombia. I lead the {atarraia} research group. I am interested in many things, among them geometry, topology, deep learning and graphical interfaces.',
+      description: 'Joan Sebastian Salazar Montoya: mathematics and computer science student at the Universidad Nacional de Colombia, leader of the AtarraIA research group.',
+      topics: 'Topics', site: 'Visit site ↗', code: 'Code', preview: 'Preview of ', toggle: 'ES', toggleLabel: 'Ver la página en español',
+    },
+  };
+
+  const ATARRAIA = { es: 'https://atarraia.github.io/', en: 'https://atarraia.github.io/?lang=en' };
+
+  // Curated list. `site` is the live page and `preview` a screenshot of it, in previews/.
   const GROUPS = [
-    { id: 'matematicas', title: 'Matemáticas', blurb: 'Geometría diferencial y sistemas dinámicos, como algo que se puede mirar y tocar.', repos: [
-      { name: 'diff-geo', title: 'Geometría diferencial interactiva', featured: true, site: 'https://extantword.github.io/diff-geo/' },
-      { name: 'interactive-diff-geo', title: 'Superficies regulares', featured: true, site: 'https://extantword.github.io/interactive-diff-geo/' },
-      { name: 'sandbox', title: 'Sandbox', featured: true, site: 'https://extantword.github.io/sandbox/' },
+    { id: 'matematicas', title: { es: 'Matemáticas', en: 'Mathematics' },
+      blurb: { es: 'Geometría diferencial y sistemas dinámicos, como algo que se puede mirar y tocar.', en: 'Differential geometry and dynamical systems, as something you can look at and touch.' }, repos: [
+      { name: 'diff-geo', title: { es: 'Geometría diferencial interactiva', en: 'Interactive differential geometry' }, featured: true,
+        site: 'https://extantword.github.io/diff-geo/', preview: 'previews/diff-geo.webp' },
+      { name: 'interactive-diff-geo', title: { es: 'Superficies regulares', en: 'Regular surfaces' }, featured: true,
+        site: 'https://extantword.github.io/interactive-diff-geo/', preview: 'previews/interactive-diff-geo.webp' },
+      { name: 'sandbox', title: { es: 'Sandbox', en: 'Sandbox' }, featured: true,
+        site: 'https://extantword.github.io/sandbox/', preview: 'previews/sandbox.webp' },
     ]},
-    { id: 'aprendizaje', title: 'Aprendizaje automático', blurb: 'Redes neuronales y su espacio latente.', repos: [
-      { name: 'activation-space-projections', title: 'Proyecciones del espacio latente', featured: true, site: 'https://extantword.github.io/activation-space-projections/' },
+    { id: 'aprendizaje', title: { es: 'Aprendizaje automático', en: 'Machine learning' },
+      blurb: { es: 'Redes neuronales, su espacio latente y el semillero AtarraIA.', en: 'Neural networks, their latent space and the AtarraIA research group.' }, repos: [
+      { name: 'activation-space-projections', title: { es: 'Proyecciones del espacio latente', en: 'Latent space projections' }, featured: true,
+        site: 'https://extantword.github.io/activation-space-projections/', preview: 'previews/activation-space-projections.webp' },
+      { name: 'AtarraIA.github.io', owner: 'AtarraIA', title: { es: 'AtarraIA', en: 'AtarraIA' }, featured: true,
+        site: ATARRAIA, preview: 'previews/atarraia.webp' },
     ]},
   ];
 
   // Snapshot from the GitHub API (language, last push); refreshed live below.
   const META = {
     'diff-geo': ['TypeScript', '2026'], 'interactive-diff-geo': ['HTML', '2026'], 'sandbox': ['HTML', '2026'],
-    'activation-space-projections': ['HTML', '2026'],
+    'activation-space-projections': ['HTML', '2026'], 'AtarraIA.github.io': ['HTML', '2026'],
   };
 
   const USER = 'Extantword';
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const pick = (v, lang) => (v && typeof v === 'object') ? v[lang] : v;
+  let LANG = 'es';
 
   function card(r) {
+    const t = TEXT[LANG], title = pick(r.title, LANG) || r.name, site = pick(r.site, LANG);
     const [lang, year] = META[r.name] || ['', ''];
-    const meta = [lang, year, r.stars ? '★ ' + r.stars : ''].filter(Boolean).map(esc).map(t => '<span>' + t + '</span>').join('');
+    const meta = [lang, year, r.stars ? '★ ' + r.stars : ''].filter(Boolean).map(esc).map(x => '<span>' + x + '</span>').join('');
     return '<article class="card' + (r.featured ? ' featured' : '') + '">' +
-      '<h3>' + esc(r.title || r.name) + '</h3>' +
+      (r.preview && site ? '<a class="shot" href="' + esc(site) + '" tabindex="-1" aria-hidden="true">' +
+        '<img src="' + esc(r.preview) + '" alt="' + esc(t.preview + title) + '" width="800" height="500" loading="lazy"></a>' : '') +
+      '<div class="body">' +
+      '<h3>' + esc(title) + '</h3>' +
       '<div class="meta">' + meta + '</div>' +
       '<div class="links">' +
-        (r.site ? '<a class="site" href="' + esc(r.site) + '">Ver sitio ↗</a>' : '') +
-        '<a href="https://github.com/' + USER + '/' + esc(r.name) + '">Código</a>' +
-      '</div></article>';
+        (site ? '<a class="site" href="' + esc(site) + '">' + t.site + '</a>' : '') +
+        '<a href="https://github.com/' + esc(r.owner || USER) + '/' + esc(r.name) + '">' + t.code + '</a>' +
+      '</div></div></article>';
   }
 
-  function render(groups) {
-    document.getElementById('groups').innerHTML = groups.map(g =>
-      '<section id="' + g.id + '"><h2>' + esc(g.title) + '<span class="n">' + g.repos.length + '</span></h2>' +
-      (g.blurb ? '<p class="blurb">' + esc(g.blurb) + '</p>' : '') +
+  function render() {
+    const t = TEXT[LANG];
+    document.documentElement.lang = LANG;
+    document.querySelector('meta[name="description"]').content = t.description;
+    document.getElementById('lead').innerHTML = esc(t.lead).replace('{atarraia}', '<a href="' + ATARRAIA[LANG] + '">AtarraIA</a>');
+    const toggle = document.getElementById('lang-toggle');
+    toggle.textContent = t.toggle;
+    toggle.lang = t.toggle.toLowerCase();
+    toggle.setAttribute('aria-label', t.toggleLabel);
+
+    document.getElementById('groups').innerHTML = GROUPS.map(g =>
+      '<section id="' + g.id + '"><h2>' + esc(pick(g.title, LANG)) + '<span class="n">' + g.repos.length + '</span></h2>' +
+      (g.blurb ? '<p class="blurb">' + esc(pick(g.blurb, LANG)) + '</p>' : '') +
       '<div class="grid">' + g.repos.map(card).join('') + '</div></section>').join('');
-    document.getElementById('topics').innerHTML = groups.map(g =>
-      '<a href="#' + g.id + '">' + esc(g.title) + '<span class="n">' + g.repos.length + '</span></a>').join('');
+    const topics = document.getElementById('topics');
+    topics.setAttribute('aria-label', t.topics);
+    topics.innerHTML = GROUPS.map(g =>
+      '<a href="#' + g.id + '">' + esc(pick(g.title, LANG)) + '<span class="n">' + g.repos.length + '</span></a>').join('');
   }
 
-  render(GROUPS);
+  // ?lang=en opens the page in English; otherwise the last choice is remembered.
+  const asked = new URLSearchParams(location.search).get('lang');
+  if (asked in TEXT) LANG = asked;
+  else { try { if (localStorage.getItem('lang') === 'en') LANG = 'en'; } catch (e) {} }
+
+  document.getElementById('lang-toggle').addEventListener('click', () => {
+    LANG = LANG === 'en' ? 'es' : 'en';
+    try { localStorage.setItem('lang', LANG); } catch (e) {}
+    const url = new URL(location.href);
+    url.searchParams.delete('lang');
+    history.replaceState(null, '', url);
+    render();
+  });
+
+  render();
 
   // Refresh languages, years and stars from GitHub.
   fetch('https://api.github.com/users/' + USER + '/repos?per_page=100')
@@ -136,7 +203,7 @@
         META[r.name] = [(r.language || '').replace('Jupyter Notebook', 'Jupyter').replace('Roff', 'LaTeX'), r.pushed_at.slice(0, 4)];
         GROUPS.forEach(g => g.repos.forEach(x => { if (x.name === r.name) x.stars = r.stargazers_count; }));
       });
-      render(GROUPS);
+      render();
     })
     .catch(() => {});
 </script>
