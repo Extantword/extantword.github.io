@@ -179,7 +179,7 @@
       '<a href="#' + g.id + '">' + esc(pick(g.title, LANG)) + '<span class="n">' + g.repos.length + '</span></a>').join('');
   }
 
-  // ?lang=en opens the page in English; otherwise the last choice is remembered.
+  // ?lang=en opens the page in English (the button keeps it in the address); otherwise the last choice is remembered.
   const asked = new URLSearchParams(location.search).get('lang');
   if (asked in TEXT) LANG = asked;
   else { try { if (localStorage.getItem('lang') === 'en') LANG = 'en'; } catch (e) {} }
@@ -188,7 +188,7 @@
     LANG = LANG === 'en' ? 'es' : 'en';
     try { localStorage.setItem('lang', LANG); } catch (e) {}
     const url = new URL(location.href);
-    url.searchParams.delete('lang');
+    if (LANG === 'en') url.searchParams.set('lang', 'en'); else url.searchParams.delete('lang');
     history.replaceState(null, '', url);
     render();
   });
